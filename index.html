@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GB PESA</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7f6;
+      color: #17211b;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .brand {
+      text-align: center;
+      margin: 25px 0;
+    }
+
+    .brand h1 {
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .brand p {
+      margin-top: 8px;
+      color: #68736d;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .card h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid #d7ded9;
+      border-radius: 10px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #087f5b;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    .secondary {
+      background: #26352e;
+      margin-top: 10px;
+    }
+
+    .danger {
+      background: #c62828;
+    }
+
+    .balance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .balance-box {
+      background: #f0f5f2;
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .balance-box small {
+      color: #68736d;
+    }
+
+    .balance-box strong {
+      display: block;
+      font-size: 20px;
+      margin-top: 8px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      background: #eef6f2;
+    }
+
+    .admin-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: #17211b;
+      color: white;
+      font-size: 12px;
+    }
+
+    .user-row {
+      border-bottom: 1px solid #e5e9e6;
+      padding: 14px 0;
+    }
+
+    .user-row:last-child {
+      border-bottom: none;
+    }
+
+    .user-row strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .user-row small {
+      color: #68736d;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="brand">
+    <h1>GB PESA</h1>
+    <p>
+      NUNUA NA KUUZA GB KWA BEI NAFUU ZAIDI
+      NA KUPATA FAIDA
+    </p>
+  </div>
+
+  <div id="message" class="message hidden"></div>
+
+  <!-- LOGIN -->
+  <div id="loginSection" class="card">
+
+    <h2>🔐 Ingia kwenye GB PESA</h2>
+
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="Email yako"
+    >
+
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button id="loginBtn">
+      INGIA
+    </button>
+
+    <button id="showRegisterBtn" class="secondary">
+      JISAJILI
+    </button>
+
+  </div>
+
+  <!-- REGISTER -->
+  <div id="registerSection" class="card hidden">
+
+    <h2>📝 Fungua Akaunti</h2>
+
+    <input
+      id="registerName"
+      type="text"
+      placeholder="Jina kamili"
+    >
+
+    <input
+      id="registerPhone"
+      type="tel"
+      placeholder="Namba ya simu"
+    >
+
+    <input
+      id="registerEmail"
+      type="email"
+      placeholder="Email"
+    >
+
+    <input
+      id="registerPassword"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button id="registerBtn">
+      JISAJILI
+    </button>
+
+    <button id="showLoginBtn" class="secondary">
+      RUDI LOGIN
+    </button>
+
+  </div>
+
+  <!-- USER DASHBOARD -->
+  <div id="dashboardSection" class="hidden">
+
+    <div class="card">
+
+      <h2>
+        Karibu, <span id="userName">User</span>
+      </h2>
+
+      <div id="adminBadge" class="hidden">
+        <span class="admin-badge">
+          👑 ADMIN
+        </span>
+      </div>
+
+    </div>
+
+    <!-- WALLET -->
+    <div class="card">
+
+      <h2>💰 Wallet Yako</h2>
+
+      <div class="balance-grid">
+
+        <div class="balance-box">
+          <small>Salio la Pesa</small>
+          <strong id="walletBalance">
+            TSh 0
+          </strong>
+        </div>
+
+        <div class="balance-box">
+          <small>Salio la GB</small>
+          <strong id="gbBalance">
+            0 GB
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BUY GB -->
+    <div class="card">
+
+      <h2>📦 Nunua GB</h2>
+
+      <select id="packageSelect">
+
+        <option value="">
+          Chagua Package
+        </option>
+
+        <option value="1|1000">
+          GB 1 — TSh 1,000
+        </option>
+
+        <option value="5|4500">
+          GB 5 — TSh 4,500
+        </option>
+
+        <option value="10|8000">
+          GB 10 — TSh 8,000
+        </option>
+
+      </select>
+
+      <button id="buyBtn">
+        NUNUA GB
+      </button>
+
+    </div>
+
+    <!-- DEPOSIT -->
+    <div class="card">
+
+      <h2>💳 Weka Pesa</h2>
+
+      <input
+        id="depositAmount"
+        type="number"
+        min="100"
+        placeholder="Kiasi cha TSh"
+      >
+
+      <button id="depositBtn">
+        WEKA PESA
+      </button>
+
+    </div>
+
+    <!-- WITHDRAW -->
+    <div class="card">
+
+      <h2>💸 Toa Pesa</h2>
+
+      <input
+        id="withdrawPhone"
+        type="tel"
+        placeholder="Namba ya simu"
+      >
+
+      <input
+        id="withdrawAmount"
+        type="number"
+        min="100"
+        placeholder="Kiasi cha TSh"
+      >
+
+      <button id="withdrawBtn">
+        OMBA WITHDRAWAL
+      </button>
+
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="card">
+
+      <h2>📜 Transactions</h2>
+
+      <div id="transactionsList">
+        Hakuna transactions bado.
+      </div>
+
+    </div>
+
+    <button id="logoutBtn" class="danger">
+      TOKA
+    </button>
+
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminSection" class="hidden">
+
+    <div class="card">
+
+      <h2>👑 ADMIN DASHBOARD</h2>
+
+      <p>
+        Usimamizi wa users na balances.
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h2>👥 Users Wote</h2>
+
+      <div id="usersList">
+        Inapakia...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+  /*
+    =====================================================
+    GB PESA - SUPABASE CONNECTION
+    =====================================================
+  */
+
+  const SUPABASE_URL =
+    "https://hkgvmbcbpkkwcomdkwrn.supabase.co";
+
+  /*
+    WEKA PUBLISHABLE KEY YAKO HAPA
+    Usitumie Service Role / Secret Key.
+  */
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_ETxSM9bCp9cWu7vwwFkrYQ_DZ8ta9sm";
+
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  /*
+    =====================================================
+    ELEMENTS
+    =====================================================
+  */
+
+  const message =
+    document.getElementById("message");
+
+  const loginSection =
+    document.getElementById("loginSection");
+
+  const registerSection =
+    document.getElementById("registerSection");
+
+  const dashboardSection =
+    document.getElementById("dashboardSection");
+
+  const adminSection =
+    document.getElementById("adminSection");
+
+
+  /*
+    =====================================================
+    MESSAGE
+    =====================================================
+  */
+
+  function showMessage(text) {
+
+    message.textContent = text;
+
+    message.classList.remove("hidden");
+
+  }
+
+
+  function hideMessage() {
+
+    message.classList.add("hidden");
+
+  }
+
+
+  /*
+    =====================================================
+    REGISTER / LOGIN SWITCH
+    =====================================================
+  */
+
+  document
+    .getElementById("showRegisterBtn")
+    .addEventListener("click", function () {
+
+      loginSection.classList.add("hidden");
+
+      registerSection.classList.remove("hidden");
+
+      hideMessage();
+
+    });
+
+
+  document
+    .getElementById("showLoginBtn")
+    .addEventListener("click", function () {
+
+      registerSection.classList.add("hidden");
+
+      loginSection.classList.remove("hidden");
+
+      hideMessage();
+
+    });
+
+
+  /*
+    =====================================================
+    REGISTER
+    =====================================================
+  */
+
+  document
+    .getElementById("registerBtn")
+    .addEventListener("click", async function () {
+
+      hideMessage();
+
+      const fullName =
+        document
+          .getElementById("registerName")
+          .value
+          .trim();
+
+      const phone =
+        document
+          .getElementById("registerPhone")
+          .value
+          .trim();
+
+      const email =
+        document
+          .getElementById("registerEmail")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("registerPassword")
+          .value;
+
+
+      if (
+        !fullName ||
+        !phone ||
+        !email ||
+        !password
+      ) {
+
+        showMessage(
+          "Tafadhali jaza taarifa zote."
+        );
+
+        return;
+
+      }
+
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Password iwe na angalau herufi 6."
+        );
+
+        return;
+
+      }
+
+
+      const { error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            data: {
+
+              full_name: fullName,
+
+              phone: phone
+
+            }
+
+          }
+
+        });
+
+
+      if (error) {
+
+        showMessage(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      showMessage(
+        "Usajili umefanikiwa. Sasa ingia kwenye akaunti yako."
+      );
+
+
+      registerSection.classList.add("hidden");
+
+      loginSection.classList.remove("hidden");
+
+    });
+
+
+  /*
+    =====================================================
+    LOGIN
+    =====================================================
+  */
+
+  document
+    .getElementById("loginBtn")
+    .addEventListener("click", async function () {
+
+      hideMessage();
+
+      const email =
+        document
+          .getElementById("loginEmail")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          .value;
+
+
+      if (!email || !password) {
+
+        showMessage(
+          "Weka email na password."
+        );
+
+        return;
+
+      }
+
+
+      const { error } =
+        await supabaseClient.auth.signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        showMessage(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      await loadDashboard();
+
+    });
+
+
+  /*
+    =====================================================
+    LOAD DASHBOARD
+    =====================================================
+  */
+
+  async function loadDashboard() {
+
+    const {
+
+      data: {
+        user
+
+      }
+
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if (!user) {
+
+      return;
+
+    }
+
+
+    const {
+
+      data: profile,
+
+      error: profileError
+
+    } =
+      await supabaseClient
+
+        .from("profiles")
+
+        .select("*")
+
+        .eq("id", user.id)
+
+        .single();
+
+
+    if (profileError) {
+
+      showMessage(
+        profileError.message
+      );
+
+      return;
+
+    }
+
+
+    const {
+
+      data: wallet,
+
+      error: walletError
+
+    } =
+      await supabaseClient
+
+        .from("wallets")
+
+        .select("*")
+
+        .eq("user_id", user.id)
+
+        .single();
+
+
+    if (walletError) {
+
+      showMessage(
+        walletError.message
+      );
+
+      return;
+
+    }
+
+
+    document
+      .getElementById("userName")
+      .textContent =
+      profile.full_name;
+
+
+    document
+      .getElementById("walletBalance")
+      .textContent =
+      "TSh " +
+      Number(
+        wallet.balance || 0
+      ).toLocaleString();
+
+
+    document
+      .getElementById("gbBalance")
+      .textContent =
+      Number(
+        wallet.gb_balance || 0
+      ) + " GB";
+
+
+    loginSection.classList.add("hidden");
+
+    registerSection.classList.add("hidden");
+
+    dashboardSection.classList.remove("hidden");
+
+
+    /*
+      ADMIN
+    */
+
+    if (profile.role === "admin") {
+
+      document
+        .getElementById("adminBadge")
+        .classList.remove("hidden");
+
+      adminSection.classList.remove("hidden");
+
+      await loadAdminUsers();
+
+    }
+
+    else {
+
+      adminSection.classList.add("hidden");
+
+    }
+
+
+    await loadTransactions();
+
+  }
+
+
+  /*
+    =====================================================
+    TRANSACTIONS
+    =====================================================
+  */
+
+  async function loadTransactions() {
+
+    const {
+
+      data: {
+        user
+
+      }
+
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if (!user) {
+
+      return;
+
+    }
+
+
+    const {
+
+      data,
+
+      error
+
+    } =
+      await supabaseClient
+
+        .from("transactions")
+
+        .select("*")
+
+        .eq("user_id", user.id)
+
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        )
+
+        .limit(20);
+
+
+    if (error) {
+
+      console.error(error);
+
+      return;
+
+    }
+
+
+    const list =
+      document.getElementById(
+        "transactionsList"
+      );
+
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
+
+      list.textContent =
+        "Hakuna transactions bado.";
+
+      return;
+
+    }
+
+
+    list.innerHTML =
+      data.map(function (tx) {
+
+        return `
+
+          <div class="user-row">
+
+            <strong>
+              ${tx.type}
+            </strong>
+
+            <small>
+              TSh
+              ${Number(
+                tx.amount
+              ).toLocaleString()}
+              —
+              ${tx.status}
+            </small>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /*
+    =====================================================
+    ADMIN USERS
+    =====================================================
+  */
+
+  async function loadAdminUsers() {
+
+    const {
+
+      data,
+
+      error
+
+    } =
+      await supabaseClient
+        .rpc("get_admin_users");
+
+
+    if (error) {
+
+      console.error(error);
+
+      document
+        .getElementById("usersList")
+        .textContent =
+        "Imeshindikana kupata users.";
+
+      return;
+
+    }
+
+
+    const list =
+      document.getElementById(
+        "usersList"
+      );
+
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
+
+      list.textContent =
+        "Hakuna users.";
+
+      return;
+
+    }
+
+
+    list.innerHTML =
+      data.map(function (user) {
+
+        return `
+
+          <div class="user-row">
+
+            <strong>
+              ${user.full_name}
+            </strong>
+
+            <small>
+
+              📱
+              ${user.phone}
+
+              <br>
+
+              💰
+              TSh
+              ${Number(
+                user.balance
+              ).toLocaleString()}
+
+              <br>
+
+              📦
+              ${Number(
+                user.gb_balance
+              )}
+              GB
+
+              <br>
+
+              👤
+              ${user.role}
+
+            </small>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /*
+    =====================================================
+    LOGOUT
+    =====================================================
+  */
+
+  document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async function () {
+
+      await supabaseClient.auth.signOut();
+
+
+      dashboardSection
+        .classList
+        .add("hidden");
+
+
+      adminSection
+        .classList
+        .add("hidden");
+
+
+      loginSection
+        .classList
+        .remove("hidden");
+
+
+      showMessage(
+        "Umetoka kwenye akaunti."
+      );
+
+    });
+
+
+  /*
+    =====================================================
+    AUTO LOGIN
+    =====================================================
+  */
+
+  supabaseClient.auth.onAuthStateChange(
+    async function (event, session) {
+
+      if (session) {
+
+        await loadDashboard();
+
+      }
+
+    }
+  );
+
+
+  /*
+    =====================================================
+    DEPOSIT - DEMO ONLY
+    =====================================================
+  */
+
+  document
+    .getElementById("depositBtn")
+    .addEventListener("click", function () {
+
+      showMessage(
+        "Deposit ya automatic itaunganishwa na payment provider baada ya API credentials kuwekwa."
+      );
+
+    });
+
+
+  /*
+    =====================================================
+    WITHDRAWAL REQUEST
+    =====================================================
+  */
+
+  document
+    .getElementById("withdrawBtn")
+    .addEventListener("click", async function () {
+
+      const phone =
+        document
+          .getElementById("withdrawPhone")
+          .value
+          .trim();
+
+      const amount =
+        Number(
+          document
+            .getElementById("withdrawAmount")
+            .value
+        );
+
+
+      if (!phone || !amount) {
+
+        showMessage(
+          "Weka namba ya simu na kiasi."
+        );
+
+        return;
+
+      }
+
+
+      if (amount < 100) {
+
+        showMessage(
+          "Kiasi cha chini ni TSh 100."
+        );
+
+        return;
+
+      }
+
+
+      const {
+
+        data: {
+          user
+
+        }
+
+      } =
+        await supabaseClient.auth.getUser();
+
+
+      if (!user) {
+
+        showMessage(
+          "Tafadhali ingia kwanza."
+        );
+
+        return;
+
+      }
+
+
+      const { error } =
+        await supabaseClient
+
+          .from("withdrawals")
+
+          .insert({
+
+            user_id: user.id,
+
+            amount: amount,
+
+            phone: phone,
+
+            status: "pending"
+
+          });
+
+
+      if (error) {
+
+        showMessage(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      showMessage(
+        "Ombi la withdrawal limepokelewa."
+      );
+
+
+      document
+        .getElementById("withdrawPhone")
+        .value = "";
+
+
+      document
+        .getElementById("withdrawAmount")
+        .value = "";
+
+    });
+
+
+  /*
+    =====================================================
+    BUY GB - DEMO UNTIL PAYMENT SYSTEM IS CONNECTED
+    =====================================================
+  */
+
+  document
+    .getElementById("buyBtn")
+    .addEventListener("click", function () {
+
+      const value =
+        document
+          .getElementById("packageSelect")
+          .value;
+
+
+      if (!value) {
+
+        showMessage(
+          "Chagua package kwanza."
+        );
+
+        return;
+
+      }
+
+
+      showMessage(
+        "Mfumo wa kununua GB utaunganishwa na wallet baada ya payment system kukamilika."
+      );
+
+    });
+
+
+</script>
+
+</body>
+  </html>
